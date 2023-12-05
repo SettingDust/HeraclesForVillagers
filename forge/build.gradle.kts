@@ -36,8 +36,7 @@ minecraft {
                     project,
                     CLEAN_ARTIFACT.format(mcpVersion),
                     true,
-                )
-                    ?: throw RuntimeException("Cannot find clean minecraft artifact")
+                ) ?: throw RuntimeException("Cannot find clean minecraft artifact")
             configureEach { property("connector.clean.path", cleanArtifactJar) }
         }
 
@@ -53,9 +52,7 @@ minecraft {
 repositories {
     exclusiveContent {
         forRepository { maven("https://api.modrinth.com/maven") { name = "Modrinth" } }
-        forRepositories(
-            fg.repository,
-        ) // Only add this if you're using ForgeGradle, otherwise remove this line
+        forRepositories(fg.repository)
         filter { includeGroup("maven.modrinth") }
     }
     maven("https://maven.su5ed.dev/releases") { name = "Sinytra" }
@@ -70,4 +67,6 @@ dependencies {
     runtimeOnly(fg.deobf(catalog.forgified.fabric.api.get()))
     runtimeOnly(catalog.fabric.kotlin) { isTransitive = false }
     runtimeOnly(project(":mod")) { isTransitive = false }
+
+    runtimeOnly(fg.deobf(catalog.heracles.forge.get()))
 }

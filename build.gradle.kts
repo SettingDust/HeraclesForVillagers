@@ -24,18 +24,22 @@ subprojects {
         maven("https://maven.terraformersmc.com/releases") {
             content { includeGroup("com.terraformersmc") }
         }
+        exclusiveContent {
+            forRepository { maven("https://api.modrinth.com/maven") { name = "Modrinth" } }
+            filter { includeGroup("maven.modrinth") }
+        }
     }
 }
 
 spotless {
     java {
         target("*/src/**/*.java")
-        palantirJavaFormat()
+        palantirJavaFormat("2.29.0")
     }
 
     kotlin {
         target("*/src/**/*.kt", "*/*.gradle.kts", "*.gradle.kts")
-        ktfmt().kotlinlangStyle()
+        ktfmt("0.46").kotlinlangStyle()
     }
 }
 

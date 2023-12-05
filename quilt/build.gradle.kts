@@ -31,6 +31,8 @@ dependencies {
     modRuntimeOnly(catalog.modmenu) { exclude(module = "fabric-loader") }
 
     runtimeOnly(project(":mod")) { isTransitive = false }
+
+    modRuntimeOnly(catalog.heracles.fabric)
 }
 
 tasks {
