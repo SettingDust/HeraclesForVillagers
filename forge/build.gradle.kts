@@ -41,10 +41,10 @@ minecraft {
             configureEach { property("connector.clean.path", cleanArtifactJar) }
         }
 
-        create("client") { ideaModule = "FabricKotlinTemplate.forge.main" }
+        create("client") { ideaModule = "HeraclesForVillagers.forge.main" }
 
         create("server") {
-            ideaModule = "FabricKotlinTemplate.forge.main"
+            ideaModule = "HeraclesForVillagers.forge.main"
             args("--nogui")
         }
     }

@@ -10,7 +10,7 @@ plugins {
     alias(catalog.plugins.semver)
 }
 
-group = "settingdust.template"
+group = "settingdust.heraclesforvillagers"
 
 version = semver.semVersion.toString()
 
