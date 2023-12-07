@@ -68,5 +68,10 @@ dependencies {
     runtimeOnly(catalog.fabric.kotlin) { isTransitive = false }
     runtimeOnly(project(":mod")) { isTransitive = false }
 
-    runtimeOnly(fg.deobf(catalog.heracles.forge.get()))
+    runtimeOnly(
+        fg.deobf(
+            catalog.heracles.forge.get(),
+            closureOf<ExternalModuleDependency> { exclude(module = "RoughlyEnoughItems-forge") }
+        )
+    )
 }

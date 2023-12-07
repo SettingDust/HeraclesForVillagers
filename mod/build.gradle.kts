@@ -38,7 +38,8 @@ dependencies {
     val modClientImplementation by configurations
     modClientImplementation(catalog.modmenu)
 
-    modImplementation(catalog.heracles.fabric)
+    modImplementation(catalog.heracles.fabric) { exclude(module = "RoughlyEnoughItems-fabric") }
+    modImplementation(catalog.resourceful.lib.fabric)
 }
 
 kotlin { jvmToolchain(17) }

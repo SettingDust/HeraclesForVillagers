@@ -103,8 +103,24 @@ dependencyResolutionManagement.versionCatalogs.create("catalog") {
      * ************
      */
     val heracles = "1.1.6"
-    library("heracles-fabric", "maven.modrinth", "heracles").version("$heracles-fabric")
-    library("heracles-forge", "maven.modrinth", "heracles").version("$heracles-forge")
+    library("heracles-fabric", "earth.terrarium.heracles", "heracles-fabric-$minecraft")
+        .version(heracles)
+    library("heracles-forge", "earth.terrarium.heracles", "heracles-forge-$minecraft")
+        .version(heracles)
+
+    val resourcefullib = "2.1.19"
+    library(
+            "resourceful-lib-fabric",
+            "com.teamresourceful.resourcefullib",
+            "resourcefullib-fabric-$minecraft"
+        )
+        .version(resourcefullib)
+    library(
+            "resourceful-lib-forge",
+            "com.teamresourceful.resourcefullib",
+            "resourcefullib-forge-$minecraft"
+        )
+        .version(resourcefullib)
 }
 
 plugins {

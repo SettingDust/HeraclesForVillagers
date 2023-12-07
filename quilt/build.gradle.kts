@@ -32,7 +32,7 @@ dependencies {
 
     runtimeOnly(project(":mod")) { isTransitive = false }
 
-    modRuntimeOnly(catalog.heracles.fabric)
+    modRuntimeOnly(catalog.heracles.fabric) { exclude(module = "RoughlyEnoughItems-fabric") }
 }
 
 tasks {

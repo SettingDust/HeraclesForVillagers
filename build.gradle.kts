@@ -24,6 +24,12 @@ subprojects {
         maven("https://maven.terraformersmc.com/releases") {
             content { includeGroup("com.terraformersmc") }
         }
+        maven("https://maven.resourcefulbees.com/repository/maven-public/") {
+            content { includeGroupAndSubgroups("com.teamresourceful") }
+        }
+        maven("https://maven.resourcefulbees.com/repository/terrarium/") {
+            content { includeGroupAndSubgroups("earth.terrarium") }
+        }
         exclusiveContent {
             forRepository { maven("https://api.modrinth.com/maven") { name = "Modrinth" } }
             filter { includeGroup("maven.modrinth") }
