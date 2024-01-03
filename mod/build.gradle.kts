@@ -10,6 +10,8 @@ val name: String by rootProject.properties
 val author: String by rootProject.properties
 val description: String by rootProject.properties
 
+base.archivesName = name
+
 loom {
     splitEnvironmentSourceSets()
 
@@ -38,8 +40,18 @@ dependencies {
     val modClientImplementation by configurations
     modClientImplementation(catalog.modmenu)
 
-    modImplementation(catalog.heracles.fabric) { exclude(module = "RoughlyEnoughItems-fabric") }
+    modImplementation(catalog.heracles.fabric) {
+        exclude(module = "RoughlyEnoughItems-fabric")
+        exclude(module = "fabric-loader")
+        exclude(module = "fabric-api")
+    }
     modImplementation(catalog.resourceful.lib.fabric)
+
+    modImplementation(catalog.kinecraft.serialization)
+    include(catalog.kinecraft.serialization)
+
+    modRuntimeOnly(catalog.jade)
+    modRuntimeOnly(catalog.reputation)
 }
 
 kotlin { jvmToolchain(17) }

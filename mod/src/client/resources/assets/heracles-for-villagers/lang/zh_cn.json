@@ -1,0 +1,14 @@
+{
+  "heracles_for_villagers.task.failed.bound_entity_died": "任务%s绑定的实体%s已死亡，任务已被重置",
+  "task.heracles_for_villagers.villager_interaction.desc": "与指定村民交互",
+  "task.heracles_for_villagers.villager_interaction": "\uD83E\uDE93 村民交互",
+  "task.heracles_for_villagers.villager_interaction.title.singular": "交互：%s",
+  "task.heracles_for_villagers.villager_interaction.desc": "使用[%s]交互",
+  "setting.heracles_for_villagers.villager_interaction.title": "标题覆写：",
+  "setting.heracles_for_villagers.villager_interaction.icon": "图标覆写：",
+  "setting.heracles_for_villagers.villager_interaction.profession": "职业：",
+  "setting.heracles_for_villagers.villager_interaction.min_reputation": "最小声望：",
+  "setting.heracles_for_villagers.villager_interaction.max_reputation": "最大声望：",
+  "setting.heracles_for_villagers.villager_interaction.bind_to_first": "绑定到第一个实体：",
+  "setting.heracles_for_villagers.villager_interaction.bound": "绑定到的实体："
+}
