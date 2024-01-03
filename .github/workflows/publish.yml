@@ -38,7 +38,7 @@ jobs:
           changelog-file: CHANGELOG.md
           # Only include this section if you wish to publish
           # your assets on Modrinth.
-          modrinth-id: b313lC4Y
+          modrinth-id: fBWbFHtJ
           modrinth-token: ${{ secrets.MODRINTH_TOKEN }}
 
           # Only include this section if you wish to publish
