@@ -10,7 +10,7 @@ import earth.terrarium.heracles.common.handlers.progress.TaskProgress
 import net.minecraft.client.MinecraftClient
 import net.minecraft.client.gui.DrawContext
 import net.minecraft.entity.EntityType
-import net.minecraft.nbt.NbtByte
+import net.minecraft.nbt.NbtCompound
 import net.minecraft.text.Text
 import net.minecraft.village.VillagerProfession
 import settingdust.heraclesforvillagers.HeraclesForVillagers
@@ -18,10 +18,12 @@ import settingdust.heraclesforvillagers.VillagerInteractTask
 
 data class VillagerInteractTaskWidget(
     val task: VillagerInteractTask,
-    val progress: TaskProgress<NbtByte>
+    val progress: TaskProgress<NbtCompound>
 ) : DisplayWidget {
     companion object {
         private const val DESC = "task.${HeraclesForVillagers.NAMESPACE}.villager_interaction.desc"
+        private const val TITLE_DEAD =
+            "task.${HeraclesForVillagers.NAMESPACE}.villager_interaction.title.dead"
     }
 
     override fun render(
@@ -36,6 +38,7 @@ data class VillagerInteractTaskWidget(
         partialTicks: Float
     ) {
         val font = MinecraftClient.getInstance().textRenderer
+        val dead = progress.progress().getBoolean("dead")
         WidgetUtils.drawBackground(
             graphics,
             x,
@@ -72,7 +75,12 @@ data class VillagerInteractTaskWidget(
                 }
             graphics.drawText(
                 font,
-                task.titleOr(TaskTitleFormatter.create(this.task)),
+                if (dead)
+                    Text.translatable(
+                        TITLE_DEAD,
+                        task.titleOr(TaskTitleFormatter.create(this.task))
+                    )
+                else task.titleOr(TaskTitleFormatter.create(this.task)),
                 x + iconSize + 16,
                 y + 6,
                 QuestScreenTheme.getTaskTitle(),
@@ -80,7 +88,7 @@ data class VillagerInteractTaskWidget(
             )
             graphics.drawText(
                 font,
-                Text.translatable(DESC, Text.keybind("key.use")),
+                Text.translatable("$DESC${if (dead) ".dead" else ""}", Text.keybind("key.use")),
                 x + iconSize + 16,
                 y + 8 + font.fontHeight,
                 QuestScreenTheme.getTaskDescription(),

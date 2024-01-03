@@ -11,7 +11,6 @@ import net.fabricmc.fabric.api.entity.event.v1.ServerLivingEntityEvents
 import net.fabricmc.fabric.api.event.player.UseEntityCallback
 import net.minecraft.entity.passive.VillagerEntity
 import net.minecraft.server.network.ServerPlayerEntity
-import net.minecraft.text.Text
 import net.minecraft.util.ActionResult
 import settingdust.heraclesforvillagers.mixin.QuestProgressHandlerAccessor
 
@@ -33,28 +32,32 @@ fun init() {
         if (entity !is VillagerEntity) return@register
         val server = entity.server ?: return@register
         val questProgressHandler = QuestProgressHandler.read(server)
+
+        data class Task(val task: VillagerInteractTask, val player: UUID, val quest: String)
+
+        val tasksNeedRebind = mutableSetOf<Task>()
         for ((uuid, questProgresses) in questProgressHandler.progress) {
             for (questId in questProgresses.completableQuests.getQuests(questProgresses)) {
                 val quest = QuestHandler.get(questId)
                 val questProgress = questProgresses.progress.getOrDefault(questId, QuestProgress())
                 for (task in quest.tasks.values.filterIsInstance<VillagerInteractTask>()) {
                     if (entity.uuid != task.bound) continue
-                    /*
-                     TODO Need record the players offline for message later.
-                    */
-                    server.playerManager
-                        .getPlayer(uuid)
-                        ?.sendMessage(
-                            Text.translatable(
-                                "${HeraclesForVillagers.NAMESPACE}.task.failed.bound_entity_died",
-                                quest.display.title(),
-                                entity.displayName
-                            )
-                        )
-                    questProgress.reset()
-                    task.bound = null
+                    val taskProgress = questProgress.getTask(task)
+                    taskProgress.reset()
+                    taskProgress.progress().putBoolean("dead", true)
+                    tasksNeedRebind += Task(task, uuid, questId)
+                }
+            }
+        }
 
-                    break
+        if (tasksNeedRebind.isNotEmpty()) {
+            for ((task) in tasksNeedRebind) {
+                task.bound = null
+            }
+
+            for ((player, quest) in tasksNeedRebind.associateBy({ it.player }, { it.quest })) {
+                server.playerManager.getPlayer(player)?.let {
+                    QuestProgressHandler.sync(it, listOf(quest))
                 }
             }
         }

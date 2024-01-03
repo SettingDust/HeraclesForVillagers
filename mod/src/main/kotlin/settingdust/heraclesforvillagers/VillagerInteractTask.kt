@@ -15,12 +15,15 @@ import kotlin.jvm.optionals.getOrNull
 import net.minecraft.entity.passive.VillagerEntity
 import net.minecraft.entity.player.PlayerEntity
 import net.minecraft.item.Items
-import net.minecraft.nbt.NbtByte
+import net.minecraft.nbt.NbtCompound
+import net.minecraft.nbt.NbtOps
 import net.minecraft.registry.Registries
 import net.minecraft.registry.RegistryKeys
 import net.minecraft.util.Identifier
 import net.minecraft.util.Uuids
 import net.minecraft.village.VillagerProfession
+import org.quiltmc.qkl.library.serialization.CodecFactory
+import org.quiltmc.qkl.library.serialization.annotation.CodecSerializable
 
 private class VillagerInteractTaskType : QuestTaskType<VillagerInteractTask> {
     override fun id() = Identifier(HeraclesForVillagers.NAMESPACE, "villager_interaction")
@@ -73,6 +76,8 @@ private class VillagerInteractTaskType : QuestTaskType<VillagerInteractTask> {
     }
 }
 
+private val codecFactory = CodecFactory {}
+
 data class VillagerInteractTask(
     val id: String,
     val title: String,
@@ -82,7 +87,7 @@ data class VillagerInteractTask(
     val bindToFirst: Boolean = true,
     var bound: UUID? = null
 ) :
-    PairQuestTask<PlayerEntity, VillagerEntity, NbtByte, VillagerInteractTask>,
+    PairQuestTask<PlayerEntity, VillagerEntity, NbtCompound, VillagerInteractTask>,
     CustomizableQuestElement {
     companion object {
         val TYPE: QuestTaskType<VillagerInteractTask> = VillagerInteractTaskType()
@@ -92,10 +97,17 @@ data class VillagerInteractTask(
 
     override fun test(
         type: QuestTaskType<*>,
-        nbt: NbtByte,
+        nbt: NbtCompound,
         player: PlayerEntity,
         villager: VillagerEntity
-    ): NbtByte {
+    ): NbtCompound {
+        val progress =
+            Progress.CODEC.parse(NbtOps.INSTANCE, storage().read(nbt)).result().orElseThrow()
+        if (progress.dead && bound != null) {
+            return Progress.CODEC.encodeStart(NbtOps.INSTANCE, Progress(dead = true))
+                .result()
+                .orElseThrow() as NbtCompound
+        }
         val isMatchProfession =
             profession.`is`(
                 Registries.VILLAGER_PROFESSION.getEntry(villager.villagerData.profession),
@@ -106,17 +118,40 @@ data class VillagerInteractTask(
                 villager.uuid
             } else bound
         val isBoundVillager = bound?.equals(villager.uuid) ?: true
-        return BooleanTaskStorage.INSTANCE.of(nbt, isMatchProfession && isBoundVillager)
+        return Progress.CODEC.encodeStart(
+                NbtOps.INSTANCE,
+                Progress(progress.progress || isMatchProfession && isBoundVillager, progress.dead)
+            )
+            .result()
+            .orElseThrow() as NbtCompound
     }
 
-    override fun getProgress(progress: NbtByte) =
-        if (storage().readBoolean(progress)) 1.0F else 0.0F
+    override fun getProgress(progress: NbtCompound) =
+        if (
+            Progress.CODEC.parse(NbtOps.INSTANCE, storage().read(progress))
+                .result()
+                .orElseThrow()
+                .progress
+        )
+            1.0F
+        else 0.0F
 
-    override fun storage() = BooleanTaskStorage.INSTANCE!!
+    override fun storage() =
+        CompoundTaskStorage(
+            "progress" to BooleanTaskStorage.INSTANCE,
+            "dead" to BooleanTaskStorage.INSTANCE
+        )
 
     override fun type() = TYPE
 
     override fun title() = title
 
     override fun icon() = icon
+
+    @CodecSerializable
+    data class Progress(val progress: Boolean = false, val dead: Boolean = false) {
+        companion object {
+            val CODEC = codecFactory.create<Progress>()
+        }
+    }
 }
