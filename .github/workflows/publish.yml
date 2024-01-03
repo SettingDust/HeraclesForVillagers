@@ -43,7 +43,7 @@ jobs:
 
           # Only include this section if you wish to publish
           # your assets on CurseForge.
-          curseforge-id: 890349
+          curseforge-id: 957468
           curseforge-token: ${{ secrets.CURSEFORGE_TOKEN }}
 
           files: |
