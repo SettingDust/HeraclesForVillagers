@@ -50,6 +50,8 @@ dependencies {
     modImplementation(catalog.kinecraft.serialization)
     include(catalog.kinecraft.serialization)
 
+    modImplementation(catalog.guard.villagers)
+
     modRuntimeOnly(catalog.jade)
     modRuntimeOnly(catalog.reputation)
 }
