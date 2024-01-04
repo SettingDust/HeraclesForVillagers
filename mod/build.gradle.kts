@@ -29,6 +29,14 @@ loom {
     }
 }
 
+val modNeedCopy by configurations.creating { isTransitive = false }
+
+val modClientNeedCopy by
+    configurations.creating {
+        extendsFrom(modNeedCopy)
+        isTransitive = false
+    }
+
 dependencies {
     minecraft(catalog.minecraft)
     mappings(variantOf(catalog.yarn) { classifier("v2") })
@@ -50,7 +58,8 @@ dependencies {
     modImplementation(catalog.kinecraft.serialization)
     include(catalog.kinecraft.serialization)
 
-    modImplementation(catalog.guard.villagers)
+    modCompileOnly(catalog.guard.villagers)
+    modNeedCopy(catalog.guard.villagers)
 
     modRuntimeOnly(catalog.jade)
     modRuntimeOnly(catalog.reputation)
@@ -87,6 +96,14 @@ tasks {
     }
 
     jar { from("LICENSE") }
+
+    val copyClientMods by
+        creating(Copy::class) {
+            destinationDir = file("${loom.runs.getByName("client").runDir}/mods")
+            from(modClientNeedCopy)
+        }
+
+    classes { dependsOn(copyClientMods) }
 
     ideaSyncTask { enabled = true }
 }

@@ -1,6 +1,7 @@
 package settingdust.heraclesforvillagers
 
 import com.mojang.datafixers.util.Pair
+import dev.sterner.guardvillagers.common.entity.GuardEntity
 import earth.terrarium.heracles.api.tasks.QuestTasks
 import earth.terrarium.heracles.common.handlers.progress.QuestProgress
 import earth.terrarium.heracles.common.handlers.progress.QuestProgressHandler
@@ -19,12 +20,20 @@ private val QuestProgressHandler.progress: Map<UUID, QuestsProgress>
 
 fun init() {
     QuestTasks.register(VillagerInteractTask.TYPE)
+    QuestTasks.register(GuardVillagerInteractTask.TYPE)
 
     UseEntityCallback.EVENT.register { player, _, _, entity, _ ->
         if (player !is ServerPlayerEntity) return@register ActionResult.PASS
-        if (entity !is VillagerEntity) return@register ActionResult.PASS
-        QuestProgressHandler.getProgress(player.server, player.uuid)
-            .testAndProgressTaskType(player, Pair(player, entity), VillagerInteractTask.TYPE)
+        if (entity is VillagerEntity)
+            QuestProgressHandler.getProgress(player.server, player.uuid)
+                .testAndProgressTaskType(player, Pair(player, entity), VillagerInteractTask.TYPE)
+        if (entity is GuardEntity)
+            QuestProgressHandler.getProgress(player.server, player.uuid)
+                .testAndProgressTaskType(
+                    player,
+                    Pair(player, entity),
+                    GuardVillagerInteractTask.TYPE
+                )
         return@register ActionResult.PASS
     }
 
@@ -33,7 +42,7 @@ fun init() {
         val server = entity.server ?: return@register
         val questProgressHandler = QuestProgressHandler.read(server)
 
-        data class Task(val task: VillagerInteractTask, val player: UUID, val quest: String)
+        data class Task(val task: BindableEntityTask, val player: UUID, val quest: String)
 
         val tasksNeedRebind = mutableSetOf<Task>()
         for ((uuid, questProgresses) in questProgressHandler.progress) {
@@ -41,6 +50,14 @@ fun init() {
                 val quest = QuestHandler.get(questId)
                 val questProgress = questProgresses.progress.getOrDefault(questId, QuestProgress())
                 for (task in quest.tasks.values.filterIsInstance<VillagerInteractTask>()) {
+                    if (entity.uuid != task.bound) continue
+                    val taskProgress = questProgress.getTask(task)
+                    taskProgress.reset()
+                    taskProgress.progress().putBoolean("dead", true)
+                    tasksNeedRebind += Task(task, uuid, questId)
+                }
+
+                for (task in quest.tasks.values.filterIsInstance<GuardVillagerInteractTask>()) {
                     if (entity.uuid != task.bound) continue
                     val taskProgress = questProgress.getTask(task)
                     taskProgress.reset()

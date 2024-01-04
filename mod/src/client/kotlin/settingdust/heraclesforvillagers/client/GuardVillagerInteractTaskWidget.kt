@@ -2,6 +2,7 @@ package settingdust.heraclesforvillagers.client
 
 import com.teamresourceful.resourcefullib.client.scissor.ScissorBoxStack
 import com.teamresourceful.resourcefullib.client.utils.RenderUtils
+import dev.sterner.guardvillagers.GuardVillagers
 import earth.terrarium.heracles.api.client.DisplayWidget
 import earth.terrarium.heracles.api.client.WidgetUtils
 import earth.terrarium.heracles.api.client.theme.QuestScreenTheme
@@ -9,22 +10,20 @@ import earth.terrarium.heracles.api.tasks.client.display.TaskTitleFormatter
 import earth.terrarium.heracles.common.handlers.progress.TaskProgress
 import net.minecraft.client.MinecraftClient
 import net.minecraft.client.gui.DrawContext
-import net.minecraft.entity.EntityType
 import net.minecraft.nbt.NbtCompound
 import net.minecraft.text.Text
-import net.minecraft.village.VillagerProfession
+import settingdust.heraclesforvillagers.GuardVillagerInteractTask
 import settingdust.heraclesforvillagers.HeraclesForVillagers
-import settingdust.heraclesforvillagers.VillagerInteractTask
 
-data class VillagerInteractTaskWidget(
-    val task: VillagerInteractTask,
+data class GuardVillagerInteractTaskWidget(
+    val task: GuardVillagerInteractTask,
     val progress: TaskProgress<NbtCompound>
 ) : DisplayWidget {
     companion object {
         private const val DESC =
-            "task.${HeraclesForVillagers.NAMESPACE}.villager_interaction.desc.singular"
+            "task.${HeraclesForVillagers.NAMESPACE}.guard_villager_interaction.desc.singular"
         private const val TITLE_DEAD =
-            "task.${HeraclesForVillagers.NAMESPACE}.villager_interaction.title.dead"
+            "task.${HeraclesForVillagers.NAMESPACE}.guard_villager_interaction.title.dead"
     }
 
     override fun render(
@@ -49,7 +48,7 @@ data class VillagerInteractTaskWidget(
         )
         val iconSize = 32
         if (!task.icon().render(graphics, scissor, x + 5, y + 5, iconSize, iconSize)) {
-            val type = EntityType.VILLAGER
+            val type = GuardVillagers.GUARD_VILLAGER
             RenderUtils.createScissorBoxStack(
                     scissor,
                     MinecraftClient.getInstance(),
@@ -65,13 +64,7 @@ data class VillagerInteractTaskWidget(
                         x + 5,
                         y + 5,
                         iconSize,
-                        type.create(MinecraftClient.getInstance().world).also {
-                            it?.villagerData =
-                                it?.villagerData?.withProfession(
-                                    task.profession.value?.left()?.orElse(null)
-                                        ?: VillagerProfession.NONE,
-                                )
-                        }
+                        type.create(MinecraftClient.getInstance().world)
                     )
                 }
             graphics.drawText(

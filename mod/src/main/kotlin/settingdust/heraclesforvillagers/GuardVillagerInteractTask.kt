@@ -2,6 +2,7 @@ package settingdust.heraclesforvillagers
 
 import com.mojang.serialization.Codec
 import com.mojang.serialization.codecs.RecordCodecBuilder
+import dev.sterner.guardvillagers.common.entity.GuardEntity
 import earth.terrarium.heracles.api.CustomizableQuestElement
 import earth.terrarium.heracles.api.quests.QuestIcon
 import earth.terrarium.heracles.api.quests.QuestIcons
@@ -9,26 +10,21 @@ import earth.terrarium.heracles.api.quests.defaults.ItemQuestIcon
 import earth.terrarium.heracles.api.tasks.PairQuestTask
 import earth.terrarium.heracles.api.tasks.QuestTaskType
 import earth.terrarium.heracles.api.tasks.storage.defaults.BooleanTaskStorage
-import earth.terrarium.heracles.common.utils.RegistryValue
 import java.util.*
 import kotlin.jvm.optionals.getOrNull
-import net.minecraft.entity.passive.VillagerEntity
 import net.minecraft.entity.player.PlayerEntity
 import net.minecraft.item.Items
 import net.minecraft.nbt.NbtCompound
 import net.minecraft.nbt.NbtOps
-import net.minecraft.registry.Registries
-import net.minecraft.registry.RegistryKeys
 import net.minecraft.util.Identifier
 import net.minecraft.util.Uuids
-import net.minecraft.village.VillagerProfession
 import org.quiltmc.qkl.library.serialization.CodecFactory
 import org.quiltmc.qkl.library.serialization.annotation.CodecSerializable
 
-private class VillagerInteractTaskType : QuestTaskType<VillagerInteractTask> {
-    override fun id() = Identifier(HeraclesForVillagers.NAMESPACE, "villager_interaction")
+private class GuardVillagerInteractTaskType : QuestTaskType<GuardVillagerInteractTask> {
+    override fun id() = Identifier(HeraclesForVillagers.NAMESPACE, "guard_villager_interaction")
 
-    override fun codec(id: String): Codec<VillagerInteractTask> {
+    override fun codec(id: String): Codec<GuardVillagerInteractTask> {
 
         return RecordCodecBuilder.create { instance ->
             instance
@@ -38,10 +34,6 @@ private class VillagerInteractTaskType : QuestTaskType<VillagerInteractTask> {
                     QuestIcons.CODEC.fieldOf("icon").orElse(ItemQuestIcon(Items.AIR)).forGetter {
                         it.icon
                     },
-                    RegistryValue.codec(RegistryKeys.VILLAGER_PROFESSION)
-                        .fieldOf("profession")
-                        .orElse(RegistryValues.VILLAGER_PROFESSION_NONE)
-                        .forGetter { it.profession },
                     Codec.INT.fieldOf("min_reputation").orElse(1).forGetter {
                         it.reputationRange.first
                     },
@@ -53,20 +45,12 @@ private class VillagerInteractTaskType : QuestTaskType<VillagerInteractTask> {
                         Optional.ofNullable(it.bound)
                     },
                 )
-                .apply(instance) {
-                    id,
-                    title,
-                    icon,
-                    profession,
-                    minReputation,
-                    maxReputation,
-                    bindToFirst,
-                    bound ->
-                    VillagerInteractTask(
+                .apply(instance) { id, title, icon, minReputation, maxReputation, bindToFirst, bound
+                    ->
+                    GuardVillagerInteractTask(
                         id,
                         title,
                         icon,
-                        profession,
                         minReputation..maxReputation,
                         bindToFirst,
                         bound.getOrNull(),
@@ -78,21 +62,20 @@ private class VillagerInteractTaskType : QuestTaskType<VillagerInteractTask> {
 
 private val codecFactory = CodecFactory {}
 
-data class VillagerInteractTask(
+data class GuardVillagerInteractTask(
     val id: String,
     val title: String,
     val icon: QuestIcon<*>,
-    val profession: RegistryValue<VillagerProfession> = RegistryValues.VILLAGER_PROFESSION_NONE,
     override val reputationRange: IntRange = IntRange.EMPTY,
     override val bindToFirst: Boolean = true,
     override var bound: UUID? = null
 ) :
-    PairQuestTask<PlayerEntity, VillagerEntity, NbtCompound, VillagerInteractTask>,
+    PairQuestTask<PlayerEntity, GuardEntity, NbtCompound, GuardVillagerInteractTask>,
     CustomizableQuestElement,
     BindableEntityTask,
     ReputationEntityTask {
     companion object {
-        val TYPE: QuestTaskType<VillagerInteractTask> = VillagerInteractTaskType()
+        val TYPE: QuestTaskType<GuardVillagerInteractTask> = GuardVillagerInteractTaskType()
     }
 
     override fun id() = id
@@ -101,7 +84,7 @@ data class VillagerInteractTask(
         type: QuestTaskType<*>,
         nbt: NbtCompound,
         player: PlayerEntity,
-        villager: VillagerEntity
+        villager: GuardEntity
     ): NbtCompound {
         val progress =
             Progress.CODEC.parse(NbtOps.INSTANCE, storage().read(nbt)).result().orElseThrow()
@@ -110,18 +93,14 @@ data class VillagerInteractTask(
                 .result()
                 .orElseThrow() as NbtCompound
         }
-        val isMatchProfession =
-            profession.`is`(
-                Registries.VILLAGER_PROFESSION.getEntry(villager.villagerData.profession),
-            )
         bound =
-            if (isMatchProfession && bound == null && bindToFirst) {
+            if (bound == null && bindToFirst) {
                 villager.uuid
             } else bound
         val isBoundVillager = bound?.equals(villager.uuid) ?: true
         return Progress.CODEC.encodeStart(
                 NbtOps.INSTANCE,
-                Progress(progress.progress || isMatchProfession && isBoundVillager, progress.dead)
+                Progress(progress.progress || isBoundVillager, progress.dead)
             )
             .result()
             .orElseThrow() as NbtCompound

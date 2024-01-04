@@ -1,6 +1,7 @@
 package settingdust.heraclesforvillagers.client
 
 import com.terraformersmc.modmenu.api.ModMenuApi
+import dev.sterner.guardvillagers.GuardVillagers
 import earth.terrarium.heracles.api.client.settings.Settings
 import earth.terrarium.heracles.api.tasks.QuestTaskDisplayFormatter
 import earth.terrarium.heracles.api.tasks.client.QuestTaskWidgets
@@ -9,6 +10,7 @@ import earth.terrarium.heracles.api.tasks.client.display.TaskTitleFormatters
 import net.minecraft.entity.EntityType
 import net.minecraft.registry.Registries
 import net.minecraft.text.Text
+import settingdust.heraclesforvillagers.GuardVillagerInteractTask
 import settingdust.heraclesforvillagers.VillagerInteractTask
 
 fun init() {
@@ -21,7 +23,7 @@ fun init() {
                 Text.translatable(
                     "${EntityType.VILLAGER.translationKey}.${
                         Registries.VILLAGER_PROFESSION.getId(
-                            profession
+                            profession,
                         ).path
                     }",
                 )
@@ -32,7 +34,26 @@ fun init() {
         String.format(
             "%d/%d",
             if (task.storage().read(progress.progress()).getBoolean("progress")) 1 else 0,
-            1
+            1,
+        )
+    }
+
+    Settings.register(GuardVillagerInteractTask.TYPE, GuardVillagerInteractSettings)
+    QuestTaskWidgets.registerSimple(
+        GuardVillagerInteractTask.TYPE,
+        ::GuardVillagerInteractTaskWidget
+    )
+    TaskTitleFormatter.register(GuardVillagerInteractTask.TYPE) { task ->
+        Text.translatable(
+            TaskTitleFormatters.toTranslationKey(task, true),
+            GuardVillagers.GUARD_VILLAGER.name
+        )
+    }
+    QuestTaskDisplayFormatter.register(VillagerInteractTask.TYPE) { progress, task ->
+        String.format(
+            "%d/%d",
+            if (task.storage().read(progress.progress()).getBoolean("progress")) 1 else 0,
+            1,
         )
     }
 }
