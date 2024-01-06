@@ -8,6 +8,8 @@
   "setting.heracles_for_villagers.villager_interaction.title": "Title override:",
   "setting.heracles_for_villagers.villager_interaction.icon": "Icon override: ",
   "setting.heracles_for_villagers.villager_interaction.profession": "Profession: ",
+  "setting.heracles_for_villagers.villager_interaction.min_level": "Min level: ",
+  "setting.heracles_for_villagers.villager_interaction.max_level": "Max level: ",
   "setting.heracles_for_villagers.villager_interaction.min_reputation": "Min reputation: ",
   "setting.heracles_for_villagers.villager_interaction.max_reputation": "Max reputation",
   "setting.heracles_for_villagers.villager_interaction.bind_to_first": "Bind to the first entity: ",

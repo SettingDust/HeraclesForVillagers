@@ -20,6 +20,8 @@ object VillagerInteractSettings :
                 RegistryValueSettings.VILLAGER_PROFESSION,
                 task?.profession ?: RegistryValues.VILLAGER_PROFESSION_NONE
             )
+            put("min_level", IntSetting.ONE, task?.levelRange?.first ?: 1)
+            put("max_level", IntSetting.ZERO, task?.levelRange?.last ?: 0)
             put("min_reputation", IntSetting.ONE, task?.reputationRange?.first ?: 1)
             put("max_reputation", IntSetting.ZERO, task?.reputationRange?.last ?: 0)
             put("bind_to_first", BooleanSetting.TRUE, task?.bindToFirst ?: true)
@@ -35,6 +37,8 @@ object VillagerInteractSettings :
             data
                 .get("profession", RegistryValueSettings.VILLAGER_PROFESSION)
                 .orElse(task?.profession ?: RegistryValues.VILLAGER_PROFESSION_NONE)
+        val minLevel = data.get("min_level", IntSetting.ONE).orElse(task?.levelRange?.first ?: 1)
+        val maxLevel = data.get("max_level", IntSetting.ZERO).orElse(task?.levelRange?.last ?: 0)
         val minReputation =
             data.get("min_reputation", IntSetting.ONE).orElse(task?.reputationRange?.first ?: 1)
         val maxReputation =
@@ -48,6 +52,7 @@ object VillagerInteractSettings :
                 title,
                 icon,
                 profession,
+                minLevel..maxLevel,
                 minReputation..maxReputation,
                 bindToFirst,
                 try {

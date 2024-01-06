@@ -8,6 +8,8 @@
   "setting.heracles_for_villagers.villager_interaction.title": "标题覆写：",
   "setting.heracles_for_villagers.villager_interaction.icon": "图标覆写：",
   "setting.heracles_for_villagers.villager_interaction.profession": "职业：",
+  "setting.heracles_for_villagers.villager_interaction.min_level": "最小等级：",
+  "setting.heracles_for_villagers.villager_interaction.max_level": "最大等级：",
   "setting.heracles_for_villagers.villager_interaction.min_reputation": "最小声望：",
   "setting.heracles_for_villagers.villager_interaction.max_reputation": "最大声望：",
   "setting.heracles_for_villagers.villager_interaction.bind_to_first": "绑定到第一个实体：",

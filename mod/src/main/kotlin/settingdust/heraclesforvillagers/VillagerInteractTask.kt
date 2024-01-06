@@ -42,6 +42,8 @@ private class VillagerInteractTaskType : QuestTaskType<VillagerInteractTask> {
                         .fieldOf("profession")
                         .orElse(RegistryValues.VILLAGER_PROFESSION_NONE)
                         .forGetter { it.profession },
+                    Codec.INT.fieldOf("min_level").orElse(1).forGetter { it.levelRange.first },
+                    Codec.INT.fieldOf("max_level").orElse(1).forGetter { it.levelRange.last },
                     Codec.INT.fieldOf("min_reputation").orElse(1).forGetter {
                         it.reputationRange.first
                     },
@@ -58,6 +60,8 @@ private class VillagerInteractTaskType : QuestTaskType<VillagerInteractTask> {
                     title,
                     icon,
                     profession,
+                    minLevel,
+                    maxLevel,
                     minReputation,
                     maxReputation,
                     bindToFirst,
@@ -67,6 +71,7 @@ private class VillagerInteractTaskType : QuestTaskType<VillagerInteractTask> {
                         title,
                         icon,
                         profession,
+                        minLevel..maxLevel,
                         minReputation..maxReputation,
                         bindToFirst,
                         bound.getOrNull(),
@@ -83,6 +88,7 @@ data class VillagerInteractTask(
     val title: String,
     val icon: QuestIcon<*>,
     val profession: RegistryValue<VillagerProfession> = RegistryValues.VILLAGER_PROFESSION_NONE,
+    val levelRange: IntRange = IntRange.EMPTY,
     override val reputationRange: IntRange = IntRange.EMPTY,
     override val bindToFirst: Boolean = true,
     override var bound: UUID? = null
@@ -114,14 +120,16 @@ data class VillagerInteractTask(
             profession.`is`(
                 Registries.VILLAGER_PROFESSION.getEntry(villager.villagerData.profession),
             )
+        val isMatchLevel = levelRange.contains(villager.villagerData.level)
+        val isMatched = isMatchLevel && isMatchProfession
         bound =
-            if (isMatchProfession && bound == null && bindToFirst) {
+            if (isMatched && bound == null && bindToFirst) {
                 villager.uuid
             } else bound
         val isBoundVillager = bound?.equals(villager.uuid) ?: true
         return Progress.CODEC.encodeStart(
                 NbtOps.INSTANCE,
-                Progress(progress.progress || isMatchProfession && isBoundVillager, progress.dead)
+                Progress(progress.progress || isMatched && isBoundVillager, progress.dead)
             )
             .result()
             .orElseThrow() as NbtCompound
