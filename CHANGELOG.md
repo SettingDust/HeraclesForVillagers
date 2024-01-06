@@ -1,4 +1,12 @@
 
+## [0.3.0] - 2024-01-06
+### :sparkles: New Features
+- [`2d77c68`](https://github.com/SettingDust/HeraclesForVillagers/commit/2d77c68f0a4162c8546fe8ba0c842b96412cb134) - add support for villager level *(commit by [@SettingDust](https://github.com/SettingDust))*
+
+### :wrench: Chores
+- [`4520ef3`](https://github.com/SettingDust/HeraclesForVillagers/commit/4520ef38ccc4602f8810b4fb5e467b1867e77b87) - merge origin/main into main *(commit by [@SettingDust](https://github.com/SettingDust))*
+
+
 ## [0.2.1] - 2024-01-05
 ### :wrench: Chores
 - [`ef9f6ff`](https://github.com/SettingDust/HeraclesForVillagers/commit/ef9f6ff41f98780fc35a1bbb3cdc1b6cf099ac1d) - merge origin/main into main *(commit by [@SettingDust](https://github.com/SettingDust))*
@@ -31,3 +39,4 @@
 [0.1.0]: https://github.com/SettingDust/HeraclesForVillagers/compare/0.0.0...0.1.0
 [0.2.0]: https://github.com/SettingDust/HeraclesForVillagers/compare/0.1.0...0.2.0
 [0.2.1]: https://github.com/SettingDust/HeraclesForVillagers/compare/0.2.0...0.2.1
+[0.3.0]: https://github.com/SettingDust/HeraclesForVillagers/compare/0.2.1...0.3.0
