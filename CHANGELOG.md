@@ -1,4 +1,9 @@
 
+## [0.2.1] - 2024-01-05
+### :wrench: Chores
+- [`ef9f6ff`](https://github.com/SettingDust/HeraclesForVillagers/commit/ef9f6ff41f98780fc35a1bbb3cdc1b6cf099ac1d) - merge origin/main into main *(commit by [@SettingDust](https://github.com/SettingDust))*
+
+
 ## [0.2.0] - 2024-01-04
 ### :sparkles: New Features
 - [`c66170e`](https://github.com/SettingDust/HeraclesForVillagers/commit/c66170e372a844c525742e0b09b393d0b8325a51) - add support for guard villages *(commit by [@SettingDust](https://github.com/SettingDust))*
@@ -25,3 +30,4 @@
 
 [0.1.0]: https://github.com/SettingDust/HeraclesForVillagers/compare/0.0.0...0.1.0
 [0.2.0]: https://github.com/SettingDust/HeraclesForVillagers/compare/0.1.0...0.2.0
+[0.2.1]: https://github.com/SettingDust/HeraclesForVillagers/compare/0.2.0...0.2.1
