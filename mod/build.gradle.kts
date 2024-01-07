@@ -15,6 +15,13 @@ base.archivesName = name
 loom {
     splitEnvironmentSourceSets()
 
+    mixin {
+        defaultRefmapName = "$id.refmap.json"
+
+        add("main", "$id.refmap.json")
+        add("client", "$id.client.refmap.json")
+    }
+
     mods {
         register(id) {
             sourceSet(sourceSets["main"])
@@ -90,9 +97,9 @@ val metadata =
     )
 
 tasks {
-    processResources {
+    withType<ProcessResources> {
         inputs.properties(metadata)
-        filesMatching("fabric.mod.json") { expand(metadata) }
+        filesMatching(listOf("fabric.mod.json", "*.mixins.json")) { expand(metadata) }
     }
 
     jar { from("LICENSE") }

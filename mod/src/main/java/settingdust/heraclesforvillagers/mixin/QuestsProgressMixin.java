@@ -23,7 +23,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-@Mixin(value = QuestsProgress.class, remap = false)
+@Mixin(value = QuestsProgress.class)
 public class QuestsProgressMixin {
     @Inject(
             method = "testAndProgressTaskType",
@@ -83,6 +83,7 @@ public class QuestsProgressMixin {
             at =
                     @At(
                             value = "INVOKE",
+                            remap = false,
                             target =
                                     "Learth/terrarium/heracles/common/handlers/progress/QuestProgress;update(Learth/terrarium/heracles/api/quests/Quest;)V"))
     private void saveQuest(
