@@ -1,4 +1,12 @@
 
+## [0.3.1] - 2024-01-07
+### :bug: Bug Fixes
+- [`32c430d`](https://github.com/SettingDust/HeraclesForVillagers/commit/32c430dffdbc31eadb6ba3a2259e2987d7c5eea2) - mixin refmap crash in prod *(commit by [@SettingDust](https://github.com/SettingDust))*
+
+### :wrench: Chores
+- [`401648a`](https://github.com/SettingDust/HeraclesForVillagers/commit/401648a478d3b4a3868c8605f692520523ecad11) - merge origin/main into main *(commit by [@SettingDust](https://github.com/SettingDust))*
+
+
 ## [0.3.0] - 2024-01-06
 ### :sparkles: New Features
 - [`2d77c68`](https://github.com/SettingDust/HeraclesForVillagers/commit/2d77c68f0a4162c8546fe8ba0c842b96412cb134) - add support for villager level *(commit by [@SettingDust](https://github.com/SettingDust))*
@@ -40,3 +48,4 @@
 [0.2.0]: https://github.com/SettingDust/HeraclesForVillagers/compare/0.1.0...0.2.0
 [0.2.1]: https://github.com/SettingDust/HeraclesForVillagers/compare/0.2.0...0.2.1
 [0.3.0]: https://github.com/SettingDust/HeraclesForVillagers/compare/0.2.1...0.3.0
+[0.3.1]: https://github.com/SettingDust/HeraclesForVillagers/compare/0.3.0...0.3.1
