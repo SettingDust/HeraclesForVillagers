@@ -137,6 +137,7 @@ dependencyResolutionManagement.versionCatalogs.create("catalog") {
     library("reputation", "maven.modrinth", "your-reputation").version("0.2.4+jade.1.20")
     library("jade", "maven.modrinth", "jade").version("11.4.3")
 
+    // https://modrinth.com/mod/guard-villagers-(fabricquilt)/versions
     library("guard-villagers", "maven.modrinth", "guard-villagers-(fabricquilt)")
         .version("2.0.8-$minecraft")
 }

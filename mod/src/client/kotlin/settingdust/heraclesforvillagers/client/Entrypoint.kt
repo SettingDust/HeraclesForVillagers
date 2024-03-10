@@ -12,6 +12,7 @@ import net.minecraft.registry.Registries
 import net.minecraft.text.Text
 import settingdust.heraclesforvillagers.GuardVillagerInteractTask
 import settingdust.heraclesforvillagers.VillagerInteractTask
+import settingdust.heraclesforvillagers.compatGuardVillager
 
 fun init() {
     Settings.register(VillagerInteractTask.TYPE, VillagerInteractSettings)
@@ -38,23 +39,25 @@ fun init() {
         )
     }
 
-    Settings.register(GuardVillagerInteractTask.TYPE, GuardVillagerInteractSettings)
-    QuestTaskWidgets.registerSimple(
-        GuardVillagerInteractTask.TYPE,
-        ::GuardVillagerInteractTaskWidget
-    )
-    TaskTitleFormatter.register(GuardVillagerInteractTask.TYPE) { task ->
-        Text.translatable(
-            TaskTitleFormatters.toTranslationKey(task, true),
-            GuardVillagers.GUARD_VILLAGER.name
+    if (compatGuardVillager) {
+        Settings.register(GuardVillagerInteractTask.TYPE, GuardVillagerInteractSettings)
+        QuestTaskWidgets.registerSimple(
+            GuardVillagerInteractTask.TYPE,
+            ::GuardVillagerInteractTaskWidget
         )
-    }
-    QuestTaskDisplayFormatter.register(VillagerInteractTask.TYPE) { progress, task ->
-        String.format(
-            "%d/%d",
-            if (task.storage().read(progress.progress()).getBoolean("progress")) 1 else 0,
-            1,
-        )
+        TaskTitleFormatter.register(GuardVillagerInteractTask.TYPE) { task ->
+            Text.translatable(
+                TaskTitleFormatters.toTranslationKey(task, true),
+                GuardVillagers.GUARD_VILLAGER.name
+            )
+        }
+        QuestTaskDisplayFormatter.register(GuardVillagerInteractTask.TYPE) { progress, task ->
+            String.format(
+                "%d/%d",
+                if (task.storage().read(progress.progress()).getBoolean("progress")) 1 else 0,
+                1,
+            )
+        }
     }
 }
 
