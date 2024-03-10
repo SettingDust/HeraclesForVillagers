@@ -30,10 +30,7 @@ subprojects {
         maven("https://maven.resourcefulbees.com/repository/terrarium/") {
             content { includeGroupAndSubgroups("earth.terrarium") }
         }
-        exclusiveContent {
-            forRepository { maven("https://api.modrinth.com/maven") { name = "Modrinth" } }
-            filter { includeGroup("maven.modrinth") }
-        }
+        maven("https://api.modrinth.com/maven") { content { includeGroup("maven.modrinth") } }
     }
 }
 
