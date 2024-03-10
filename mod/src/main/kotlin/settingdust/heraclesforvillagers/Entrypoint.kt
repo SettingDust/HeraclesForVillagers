@@ -18,16 +18,24 @@ import settingdust.heraclesforvillagers.mixin.QuestProgressHandlerAccessor
 private val QuestProgressHandler.progress: Map<UUID, QuestsProgress>
     get() = (this as QuestProgressHandlerAccessor).progress
 
+val compatGuardVillager: Boolean =
+    try {
+        Class.forName("dev.sterner.guardvillagers.common.entity.GuardEntity")
+        true
+    } catch (e: ClassNotFoundException) {
+        false
+    }
+
 fun init() {
     QuestTasks.register(VillagerInteractTask.TYPE)
-    QuestTasks.register(GuardVillagerInteractTask.TYPE)
+    if (compatGuardVillager) QuestTasks.register(GuardVillagerInteractTask.TYPE)
 
     UseEntityCallback.EVENT.register { player, _, _, entity, _ ->
         if (player !is ServerPlayerEntity) return@register ActionResult.PASS
         if (entity is VillagerEntity)
             QuestProgressHandler.getProgress(player.server, player.uuid)
                 .testAndProgressTaskType(player, Pair(player, entity), VillagerInteractTask.TYPE)
-        if (entity is GuardEntity)
+        if (compatGuardVillager && entity is GuardEntity)
             QuestProgressHandler.getProgress(player.server, player.uuid)
                 .testAndProgressTaskType(
                     player,
@@ -57,13 +65,14 @@ fun init() {
                     tasksNeedRebind += Task(task, uuid, questId)
                 }
 
-                for (task in quest.tasks.values.filterIsInstance<GuardVillagerInteractTask>()) {
-                    if (entity.uuid != task.bound) continue
-                    val taskProgress = questProgress.getTask(task)
-                    taskProgress.reset()
-                    taskProgress.progress().putBoolean("dead", true)
-                    tasksNeedRebind += Task(task, uuid, questId)
-                }
+                if (compatGuardVillager)
+                    for (task in quest.tasks.values.filterIsInstance<GuardVillagerInteractTask>()) {
+                        if (entity.uuid != task.bound) continue
+                        val taskProgress = questProgress.getTask(task)
+                        taskProgress.reset()
+                        taskProgress.progress().putBoolean("dead", true)
+                        tasksNeedRebind += Task(task, uuid, questId)
+                    }
             }
         }
 
