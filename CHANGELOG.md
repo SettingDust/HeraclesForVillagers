@@ -1,4 +1,12 @@
 
+## [0.3.2] - 2024-03-10
+### :bug: Bug Fixes
+- [`07d180b`](https://github.com/SettingDust/HeraclesForVillagers/commit/07d180b3d0434c262e894054a1a44d947891ad5d) - checking if the guard villager exist to avoid crashing *(commit by [@SettingDust](https://github.com/SettingDust))*
+
+### :wrench: Chores
+- [`945dd1d`](https://github.com/SettingDust/HeraclesForVillagers/commit/945dd1d77a8b6f840b0f07f1a4265f38aa6ae71d) - **deps**: bump org.danilopianini.gradle-pre-commit-git-hooks *(commit by [@dependabot[bot]](https://github.com/apps/dependabot))*
+
+
 ## [0.3.1] - 2024-01-07
 ### :bug: Bug Fixes
 - [`32c430d`](https://github.com/SettingDust/HeraclesForVillagers/commit/32c430dffdbc31eadb6ba3a2259e2987d7c5eea2) - mixin refmap crash in prod *(commit by [@SettingDust](https://github.com/SettingDust))*
@@ -49,3 +57,4 @@
 [0.2.1]: https://github.com/SettingDust/HeraclesForVillagers/compare/0.2.0...0.2.1
 [0.3.0]: https://github.com/SettingDust/HeraclesForVillagers/compare/0.2.1...0.3.0
 [0.3.1]: https://github.com/SettingDust/HeraclesForVillagers/compare/0.3.0...0.3.1
+[0.3.2]: https://github.com/SettingDust/HeraclesForVillagers/compare/0.3.1...0.3.2
