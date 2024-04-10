@@ -1,4 +1,16 @@
 
+## [0.4.0] - 2024-04-10
+### :sparkles: New Features
+- [`529a9c3`](https://github.com/SettingDust/HeraclesForVillagers/commit/529a9c36efbd5625ce2a0236844e7ee1f8e16336) - add reputation reward *(commit by [@SettingDust](https://github.com/SettingDust))*
+
+### :bug: Bug Fixes
+- [`b9db3c4`](https://github.com/SettingDust/HeraclesForVillagers/commit/b9db3c48c983b4e38787be3cc3dd75683c11b105) - checking if the guard villager exist to avoid crashing *(commit by [@SettingDust](https://github.com/SettingDust))*
+
+### :wrench: Chores
+- [`c78f6f0`](https://github.com/SettingDust/HeraclesForVillagers/commit/c78f6f09eebadf2b355a5b22905baa52657f6bc8) - **deps**: bump org.gradle.toolchains.foojay-resolver-convention *(commit by [@dependabot[bot]](https://github.com/apps/dependabot))*
+- [`3d3af76`](https://github.com/SettingDust/HeraclesForVillagers/commit/3d3af76950c35b5d3296f2bb3d1b75f0c4801100) - **deps**: bump dependencies *(commit by [@SettingDust](https://github.com/SettingDust))*
+
+
 ## [0.3.2] - 2024-03-10
 ### :bug: Bug Fixes
 - [`07d180b`](https://github.com/SettingDust/HeraclesForVillagers/commit/07d180b3d0434c262e894054a1a44d947891ad5d) - checking if the guard villager exist to avoid crashing *(commit by [@SettingDust](https://github.com/SettingDust))*
@@ -58,3 +70,4 @@
 [0.3.0]: https://github.com/SettingDust/HeraclesForVillagers/compare/0.2.1...0.3.0
 [0.3.1]: https://github.com/SettingDust/HeraclesForVillagers/compare/0.3.0...0.3.1
 [0.3.2]: https://github.com/SettingDust/HeraclesForVillagers/compare/0.3.1...0.3.2
+[0.4.0]: https://github.com/SettingDust/HeraclesForVillagers/compare/0.3.2...0.4.0
