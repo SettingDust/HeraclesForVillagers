@@ -3,6 +3,7 @@ package settingdust.heraclesforvillagers.client
 import com.terraformersmc.modmenu.api.ModMenuApi
 import dev.sterner.guardvillagers.GuardVillagers
 import earth.terrarium.heracles.api.client.settings.Settings
+import earth.terrarium.heracles.api.rewards.client.QuestRewardWidgets
 import earth.terrarium.heracles.api.tasks.QuestTaskDisplayFormatter
 import earth.terrarium.heracles.api.tasks.client.QuestTaskWidgets
 import earth.terrarium.heracles.api.tasks.client.display.TaskTitleFormatter
@@ -11,10 +12,14 @@ import net.minecraft.entity.EntityType
 import net.minecraft.registry.Registries
 import net.minecraft.text.Text
 import settingdust.heraclesforvillagers.GuardVillagerInteractTask
+import settingdust.heraclesforvillagers.ReputationReward
 import settingdust.heraclesforvillagers.VillagerInteractTask
 import settingdust.heraclesforvillagers.compatGuardVillager
 
 fun init() {
+    Settings.register(ReputationReward.Type, ReputationRewardSettings)
+    QuestRewardWidgets.register(ReputationReward.Type, ReputationRewardWidget::of)
+
     Settings.register(VillagerInteractTask.TYPE, VillagerInteractSettings)
     QuestTaskWidgets.registerSimple(VillagerInteractTask.TYPE, ::VillagerInteractTaskWidget)
     TaskTitleFormatter.register(VillagerInteractTask.TYPE) { task ->

@@ -1,16 +1,18 @@
 {
-  "required": true,
-  "minVersion": "0.8",
-  "package": "settingdust.heraclesforvillagers.mixin",
-  "refmap": "${id}.refmap.json",
-  "compatibilityLevel": "JAVA_17",
-  "mixins": [
-    "QuestProgressHandlerAccessor",
-    "QuestsProgressMixin"
-  ],
-  "client": [
-  ],
-  "injectors": {
-    "defaultRequire": 1
+    "required": true,
+    "minVersion": "0.8",
+    "package": "settingdust.heraclesforvillagers.mixin",
+    "refmap": "${id}.refmap.json",
+    "compatibilityLevel": "JAVA_17",
+    "mixins": [
+        "GuardEntityMixin",
+        "QuestProgressHandlerAccessor",
+        "QuestsProgressMixin",
+        "VillagerEntityMixin"
+    ],
+    "client": [
+    ],
+    "injectors": {
+        "defaultRequire": 1
   }
 }

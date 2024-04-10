@@ -3,6 +3,7 @@ plugins {
 
     alias(catalog.plugins.kotlin.jvm)
     alias(catalog.plugins.kotlin.plugin.serialization)
+    alias(catalog.plugins.explosion)
 }
 
 val id: String by rootProject.properties
@@ -44,6 +45,8 @@ val modClientNeedCopy by
         isTransitive = false
     }
 
+kotlin { jvmToolchain(17) }
+
 dependencies {
     minecraft(catalog.minecraft)
     mappings(variantOf(catalog.yarn) { classifier("v2") })
@@ -55,12 +58,13 @@ dependencies {
     val modClientImplementation by configurations
     modClientImplementation(catalog.modmenu)
 
-    modImplementation(catalog.heracles.fabric) {
-        exclude(module = "RoughlyEnoughItems-fabric")
-        exclude(module = "fabric-loader")
-        exclude(module = "fabric-api")
-    }
+    modImplementation(explosion.fabric(catalog.heracles.fabric.get().toString()))
     modImplementation(catalog.resourceful.lib.fabric)
+
+    modImplementation(catalog.heracles.blabber)
+    modRuntimeOnly(catalog.blabber)
+    modImplementation(catalog.cardinal.components.base)
+    modImplementation(catalog.cardinal.components.entity)
 
     modImplementation(catalog.kinecraft.serialization)
     include(catalog.kinecraft.serialization)
@@ -71,8 +75,6 @@ dependencies {
     modRuntimeOnly(catalog.jade)
     modRuntimeOnly(catalog.reputation)
 }
-
-kotlin { jvmToolchain(17) }
 
 java {
     // Loom will automatically attach sourcesJar to a RemapSourcesJar task and to the "build" task

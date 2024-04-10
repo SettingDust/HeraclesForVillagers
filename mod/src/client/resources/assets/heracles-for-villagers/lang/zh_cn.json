@@ -25,5 +25,8 @@
   "setting.heracles_for_villagers.guard_villager_interaction.min_reputation": "最小声望：",
   "setting.heracles_for_villagers.guard_villager_interaction.max_reputation": "最大声望：",
   "setting.heracles_for_villagers.guard_villager_interaction.bind_to_first": "绑定到第一个实体：",
-  "setting.heracles_for_villagers.guard_villager_interaction.bound": "绑定的实体："
+  "setting.heracles_for_villagers.guard_villager_interaction.bound": "绑定的实体：",
+  "reward.heracles_for_villagers.reputation": "\uD83E\uDD9C 声望",
+  "reward.heracles_for_villagers.reputation.title.singular": "修改声望",
+  "reward.heracles_for_villagers.reputation.desc.singular": "类型：%s，数值：%s"
 }

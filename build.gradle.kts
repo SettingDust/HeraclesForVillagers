@@ -31,6 +31,16 @@ subprojects {
             content { includeGroupAndSubgroups("earth.terrarium") }
         }
         maven("https://api.modrinth.com/maven") { content { includeGroup("maven.modrinth") } }
+        maven("https://maven.ladysnake.org/releases") {
+            name = "Ladysnake Mods"
+            content {
+                includeGroupByRegex("(org|io\\.github).ladysnake.*")
+                includeGroupByRegex("(dev|io\\.github)\\.onyxstudios.*")
+            }
+        }
+        maven("https://oss.sonatype.org/content/repositories/snapshots") {
+            name = "Nexus Repository Manager"
+        }
     }
 }
 

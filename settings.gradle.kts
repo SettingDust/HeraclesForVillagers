@@ -12,7 +12,7 @@ dependencyResolutionManagement.versionCatalogs.named("catalog") {
      * ************
      */
     // https://modrinth.com/mod/heracles/versions
-    val heracles = "1.1.11"
+    val heracles = "1.1.12"
     library("heracles-fabric", "maven.modrinth", "heracles").version("$heracles-fabric")
     library("heracles-forge", "maven.modrinth", "heracles").version("$heracles-forge")
 
@@ -40,6 +40,26 @@ dependencyResolutionManagement.versionCatalogs.named("catalog") {
     // https://modrinth.com/mod/guard-villagers-(fabricquilt)/versions
     library("guard-villagers", "maven.modrinth", "guard-villagers-(fabricquilt)")
         .version("2.0.9-$minecraft")
+
+    library("heracles-blabber", "maven.modrinth", "heracles-for-blabber").version("0.5.2-fabric")
+
+    // https://modrinth.com/mod/blabber/versions
+    library("blabber", "org.ladysnake", "blabber").version("1.4.0-mc$minecraft")
+
+    // https://maven.ladysnake.org/#/releases/dev/onyxstudios/cardinal-components-api
+    val cardinalComponents = "5.2.2"
+    library(
+            "cardinal-components-base",
+            "dev.onyxstudios.cardinal-components-api",
+            "cardinal-components-base"
+        )
+        .version(cardinalComponents)
+    library(
+            "cardinal-components-entity",
+            "dev.onyxstudios.cardinal-components-api",
+            "cardinal-components-entity"
+        )
+        .version(cardinalComponents)
 }
 
 plugins {

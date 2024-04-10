@@ -2,6 +2,7 @@ package settingdust.heraclesforvillagers
 
 import com.mojang.datafixers.util.Pair
 import dev.sterner.guardvillagers.common.entity.GuardEntity
+import earth.terrarium.heracles.api.rewards.QuestRewards
 import earth.terrarium.heracles.api.tasks.QuestTasks
 import earth.terrarium.heracles.common.handlers.progress.QuestProgress
 import earth.terrarium.heracles.common.handlers.progress.QuestProgressHandler
@@ -13,6 +14,8 @@ import net.fabricmc.fabric.api.event.player.UseEntityCallback
 import net.minecraft.entity.passive.VillagerEntity
 import net.minecraft.server.network.ServerPlayerEntity
 import net.minecraft.util.ActionResult
+import net.minecraft.util.Identifier
+import org.apache.logging.log4j.LogManager
 import settingdust.heraclesforvillagers.mixin.QuestProgressHandlerAccessor
 
 private val QuestProgressHandler.progress: Map<UUID, QuestsProgress>
@@ -28,6 +31,7 @@ val compatGuardVillager: Boolean =
 
 fun init() {
     QuestTasks.register(VillagerInteractTask.TYPE)
+    QuestRewards.register(ReputationReward.Type)
     if (compatGuardVillager) QuestTasks.register(GuardVillagerInteractTask.TYPE)
 
     UseEntityCallback.EVENT.register { player, _, _, entity, _ ->
@@ -92,4 +96,7 @@ fun init() {
 
 object HeraclesForVillagers {
     const val NAMESPACE = "heracles_for_villagers"
+    val LOGGER = LogManager.getLogger()!!
+
+    fun identifier(path: String) = Identifier(NAMESPACE, path)
 }

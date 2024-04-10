@@ -25,5 +25,8 @@
   "setting.heracles_for_villagers.guard_villager_interaction.min_reputation": "Min reputation: ",
   "setting.heracles_for_villagers.guard_villager_interaction.max_reputation": "Max reputation",
   "setting.heracles_for_villagers.guard_villager_interaction.bind_to_first": "Bind to the first entity: ",
-  "setting.heracles_for_villagers.guard_villager_interaction.bound": "Entity bind to: "
+  "setting.heracles_for_villagers.guard_villager_interaction.bound": "Entity bind to: ",
+  "reward.heracles_for_villagers.reputation": "\uD83E\uDD9C Reputation",
+  "reward.heracles_for_villagers.reputation.title.singular": "Modify reputation",
+  "reward.heracles_for_villagers.reputation.desc.singular": "Type: %s. Value: %s"
 }
