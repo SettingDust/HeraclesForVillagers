@@ -1,4 +1,9 @@
 
+## [0.4.1] - 2024-04-16
+### :sparkles: New Features
+- [`ffa2553`](https://github.com/SettingDust/HeraclesForVillagers/commit/ffa255387e27590d494cba96c00b7d68237ef7cd) - avoid default when interaction quest complete *(commit by [@SettingDust](https://github.com/SettingDust))*
+
+
 ## [0.4.0] - 2024-04-10
 ### :sparkles: New Features
 - [`529a9c3`](https://github.com/SettingDust/HeraclesForVillagers/commit/529a9c36efbd5625ce2a0236844e7ee1f8e16336) - add reputation reward *(commit by [@SettingDust](https://github.com/SettingDust))*
@@ -71,3 +76,4 @@
 [0.3.1]: https://github.com/SettingDust/HeraclesForVillagers/compare/0.3.0...0.3.1
 [0.3.2]: https://github.com/SettingDust/HeraclesForVillagers/compare/0.3.1...0.3.2
 [0.4.0]: https://github.com/SettingDust/HeraclesForVillagers/compare/0.3.2...0.4.0
+[0.4.1]: https://github.com/SettingDust/HeraclesForVillagers/compare/0.4.0...0.4.1
