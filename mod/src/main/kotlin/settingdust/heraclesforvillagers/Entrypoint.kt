@@ -29,6 +29,8 @@ val compatGuardVillager: Boolean =
         false
     }
 
+var taskTestFlag = false
+
 fun init() {
     QuestTasks.register(VillagerInteractTask.TYPE)
     QuestRewards.register(ReputationReward.Type)
@@ -46,7 +48,13 @@ fun init() {
                     Pair(player, entity),
                     GuardVillagerInteractTask.TYPE
                 )
-        return@register ActionResult.PASS
+        return@register if (taskTestFlag) {
+            taskTestFlag = false
+            ActionResult.SUCCESS
+        } else {
+            taskTestFlag = true
+            ActionResult.PASS
+        }
     }
 
     ServerLivingEntityEvents.AFTER_DEATH.register { entity, _ ->

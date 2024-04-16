@@ -13,7 +13,6 @@ import earth.terrarium.heracles.common.handlers.quests.QuestHandler;
 import earth.terrarium.heracles.common.network.NetworkHandler;
 import earth.terrarium.heracles.common.network.packets.quests.ClientboundUpdateQuestPacket;
 import earth.terrarium.heracles.common.network.packets.quests.data.NetworkQuestData;
-import java.util.Objects;
 import net.minecraft.nbt.NbtElement;
 import net.minecraft.nbt.NbtOps;
 import net.minecraft.registry.RegistryOps;
@@ -22,56 +21,82 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import settingdust.heraclesforvillagers.EntrypointKt;
+
+import java.util.Objects;
 
 @Mixin(value = QuestsProgress.class)
 public class QuestsProgressMixin {
     @Inject(
-            method = "testAndProgressTaskType",
-            at =
-                    @At(
-                            value = "INVOKE",
-                            target =
-                                    "Learth/terrarium/heracles/common/handlers/progress/TaskProgress;progress()Lnet/minecraft/nbt/NbtElement;",
-                            ordinal = 0))
-    private void saveBeforeTask(
-            ServerPlayerEntity player,
-            Object input,
-            QuestTaskType<?> taskType,
-            CallbackInfo ci,
-            @Local String id,
-            @Local QuestTask<?, ?, ?> task,
-            @Share("beforeTask") LocalRef<NbtElement> beforeTask) {
-        Codec<QuestTask<?, ?, ?>> codec =
-                (Codec<QuestTask<?, ?, ?>>) task.type().codec(task.id());
-        beforeTask.set(codec.encodeStart(
-                        RegistryOps.of(NbtOps.INSTANCE, player.getWorld().getRegistryManager()), task)
-                .result()
-                .orElseThrow());
+        method = "testAndProgressTaskType",
+        at = @At(
+            value = "INVOKE",
+            target = "Learth/terrarium/heracles/common/handlers/progress/QuestsProgress;sendOutQuestComplete" +
+                     "(Learth/terrarium/heracles/api/quests/QuestEntry;" +
+                     "Lnet/minecraft/server/network/ServerPlayerEntity;)V"
+        )
+    )
+    private <I> void heraclesForVillagers(
+        final ServerPlayerEntity player, final I input, final QuestTaskType<?> taskType, final CallbackInfo ci
+    ) {
+        EntrypointKt.setTaskTestFlag(true);
     }
 
     @Inject(
-            method = "testAndProgressTaskType",
-            at =
-                    @At(
-                            value = "INVOKE",
-                            target =
-                                    "Learth/terrarium/heracles/common/handlers/progress/TaskProgress;progress()Lnet/minecraft/nbt/NbtElement;",
-                            ordinal = 1))
-    private void compareTask(
-            ServerPlayerEntity player,
-            Object input,
-            QuestTaskType<?> taskType,
-            CallbackInfo ci,
-            @Local String id,
-            @Local QuestTask<?, ?, ?> task,
-            @Share("needSync") LocalBooleanRef needSync,
-            @Share("beforeTask") LocalRef<NbtElement> beforeTask) {
+        method = "testAndProgressTaskType",
+        at =
+        @At(
+            value = "INVOKE",
+            target =
+                "Learth/terrarium/heracles/common/handlers/progress/TaskProgress;progress()" +
+                "Lnet/minecraft/nbt/NbtElement;",
+            ordinal = 0
+        )
+    )
+    private void saveBeforeTask(
+        ServerPlayerEntity player,
+        Object input,
+        QuestTaskType<?> taskType,
+        CallbackInfo ci,
+        @Local String id,
+        @Local QuestTask<?, ?, ?> task,
+        @Share("beforeTask") LocalRef<NbtElement> beforeTask
+    ) {
         Codec<QuestTask<?, ?, ?>> codec =
-                (Codec<QuestTask<?, ?, ?>>) task.type().codec(task.id());
+            (Codec<QuestTask<?, ?, ?>>) task.type().codec(task.id());
+        beforeTask.set(codec.encodeStart(
+                                RegistryOps.of(NbtOps.INSTANCE, player.getWorld().getRegistryManager()), task)
+                            .result()
+                            .orElseThrow());
+    }
+
+    @Inject(
+        method = "testAndProgressTaskType",
+        at =
+        @At(
+            value = "INVOKE",
+            target =
+                "Learth/terrarium/heracles/common/handlers/progress/TaskProgress;progress()" +
+                "Lnet/minecraft/nbt/NbtElement;",
+            ordinal = 1
+        )
+    )
+    private void compareTask(
+        ServerPlayerEntity player,
+        Object input,
+        QuestTaskType<?> taskType,
+        CallbackInfo ci,
+        @Local String id,
+        @Local QuestTask<?, ?, ?> task,
+        @Share("needSync") LocalBooleanRef needSync,
+        @Share("beforeTask") LocalRef<NbtElement> beforeTask
+    ) {
+        Codec<QuestTask<?, ?, ?>> codec =
+            (Codec<QuestTask<?, ?, ?>>) task.type().codec(task.id());
         final var afterTask = codec.encodeStart(
-                        RegistryOps.of(NbtOps.INSTANCE, player.getWorld().getRegistryManager()), task)
-                .result()
-                .orElseThrow();
+                                       RegistryOps.of(NbtOps.INSTANCE, player.getWorld().getRegistryManager()), task)
+                                   .result()
+                                   .orElseThrow();
         if (!afterTask.equals(beforeTask)) {
             QuestHandler.markDirty(id);
             needSync.set(true);
@@ -79,24 +104,28 @@ public class QuestsProgressMixin {
     }
 
     @Inject(
-            method = "testAndProgressTaskType",
-            at =
-                    @At(
-                            value = "INVOKE",
-                            remap = false,
-                            target =
-                                    "Learth/terrarium/heracles/common/handlers/progress/QuestProgress;update(Learth/terrarium/heracles/api/quests/Quest;)V"))
+        method = "testAndProgressTaskType",
+        at =
+        @At(
+            value = "INVOKE",
+            remap = false,
+            target =
+                "Learth/terrarium/heracles/common/handlers/progress/QuestProgress;update" +
+                "(Learth/terrarium/heracles/api/quests/Quest;)V"
+        )
+    )
     private void saveQuest(
-            ServerPlayerEntity player,
-            Object input,
-            QuestTaskType<?> taskType,
-            CallbackInfo ci,
-            @Local String id,
-            @Local Quest quest,
-            @Share("needSync") LocalBooleanRef needSync) {
+        ServerPlayerEntity player,
+        Object input,
+        QuestTaskType<?> taskType,
+        CallbackInfo ci,
+        @Local String id,
+        @Local Quest quest,
+        @Share("needSync") LocalBooleanRef needSync
+    ) {
         if (needSync.get()) {
             var packet = new ClientboundUpdateQuestPacket(
-                    id, NetworkQuestData.builder().tasks(quest.tasks()).build());
+                id, NetworkQuestData.builder().tasks(quest.tasks()).build());
             NetworkHandler.CHANNEL.sendToAllPlayers(packet, Objects.requireNonNull(player.getServer()));
         }
     }
