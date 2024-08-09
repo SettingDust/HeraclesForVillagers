@@ -12,7 +12,7 @@ dependencyResolutionManagement.versionCatalogs.named("catalog") {
      * ************
      */
     // https://modrinth.com/mod/heracles/versions
-    val heracles = "1.1.12"
+    val heracles = "1.1.13"
     library("heracles-fabric", "maven.modrinth", "heracles").version("$heracles-fabric")
     library("heracles-forge", "maven.modrinth", "heracles").version("$heracles-forge")
 

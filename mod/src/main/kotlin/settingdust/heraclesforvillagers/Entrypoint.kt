@@ -38,9 +38,11 @@ fun init() {
 
     UseEntityCallback.EVENT.register { player, _, _, entity, _ ->
         if (player !is ServerPlayerEntity) return@register ActionResult.PASS
+        taskTestFlag = false
         if (entity is VillagerEntity)
             QuestProgressHandler.getProgress(player.server, player.uuid)
                 .testAndProgressTaskType(player, Pair(player, entity), VillagerInteractTask.TYPE)
+
         if (compatGuardVillager && entity is GuardEntity)
             QuestProgressHandler.getProgress(player.server, player.uuid)
                 .testAndProgressTaskType(
@@ -49,10 +51,8 @@ fun init() {
                     GuardVillagerInteractTask.TYPE
                 )
         return@register if (taskTestFlag) {
-            taskTestFlag = false
             ActionResult.SUCCESS
         } else {
-            taskTestFlag = true
             ActionResult.PASS
         }
     }

@@ -74,6 +74,8 @@ dependencies {
 
     modRuntimeOnly(catalog.jade)
     modRuntimeOnly(catalog.reputation)
+
+    modRuntimeOnly("maven.modrinth:beans-backpacks:20.1-2.0.2")
 }
 
 java {
